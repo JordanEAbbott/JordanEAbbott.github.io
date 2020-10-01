@@ -6,7 +6,7 @@ var cookieParser = require("cookie-parser");
 
 var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
-var redirect_uri = 'https://spotify-api-project.glitch.me/callback'; // Your redirect uri
+var redirect_uri = 'https://blooming-savannah-31882.herokuapp.com/callback'; // Your redirect uri
 
 var generateRandomString = function(length) {
   var text = '';
