@@ -3,13 +3,13 @@ var request = require("request");
 var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
-const {Client} = require("pg");
+const {pgClient} = require("pg");
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'https://spotifind.co.uk/callback/';
 
-const pgclient = new Client({
+const pgclient = new pgClient({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
