@@ -160,7 +160,6 @@ app.get('/log_details', function(req, res) {
       console.log(body);
       user_id = body.id;
       console.log(user_id)
-      return user_id;
     });
     console.log(user_id);
     var saved_tracks = {
