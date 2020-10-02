@@ -156,11 +156,15 @@ app.get('/log_details', function(req, res) {
       json: true
     };
     var user_id;
-    request.get(user_data, await function(error, response, body) {
+    request.get(user_data, function(error, response, body) {
       console.log(body);
       user_id = body.id;
       console.log(user_id)
     });
+    while(!user_id) {
+      continue
+    }
+    
     console.log(user_id);
     var saved_tracks = {
       url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
