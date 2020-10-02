@@ -156,7 +156,7 @@ app.get('/log_details', function(req, res) {
       json: true
     };
     var user_id;
-    request.get(user_data, function(error, response, body) {
+    request.get(user_data, await function(error, response, body) {
       console.log(body);
       user_id = body.id;
       console.log(user_id)
