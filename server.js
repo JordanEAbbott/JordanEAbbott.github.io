@@ -10,7 +10,7 @@ const client = new Client({
   ssl: {
     rejectUnauthorized: false
   }
-})
+});
 client.connect();
 
 var client_id = process.env.CLIENT_ID;
@@ -105,7 +105,10 @@ app.get('/callback', function(req, res) {
         };
 
         request.get(last_liked, function(error, response, body) {
-          client.query('INSERT INTO users (user_id, \'example_friends\', \'example_songs\')');
+          client.query('INSERT INTO users (user_id, \'example_friends\', \'example_songs\')', (err, res) => {
+            if (err) throw err;
+            client.end();
+          });
           console.log(body);
         });
 
