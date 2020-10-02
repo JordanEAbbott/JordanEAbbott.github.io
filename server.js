@@ -137,28 +137,21 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-app.get('/log_details', function(req, res) {
+app.get('/log_details', function(req, res)
 
-  if (!error && response.statusCode === 200) {
-    var access_token = body.access_token,
-        refresh_token = body.refresh_token;
+  var saved_tracks = {
+    url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
 
-    var saved_tracks = {
-      url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
-      headers: { 'Authorization': 'Bearer ' + access_token },
-      json: true
-    };
-
-    request.get(saved_tracks, function (error, response, body) {
-      client.query(`INSERT INTO users VALUES (${user_id}, \'example_friends\', \'example_songs\');`, (err, res) => {
-        if (err) throw err;
-        client.end();
-      });
-      console.log(body);
+  request.get(saved_tracks, function (error, response, body) {
+    client.query(`INSERT INTO users VALUES (${user_id}, \'example_friends\', \'example_songs\');`, (err, res) => {
+      if (err) throw err;
+      client.end();
     });
-  } else if (!access_token) {
-    console.log("No access token.")
-  }
+    console.log(body);
+  });
 });
 
 console.log('Listening on 8888');
