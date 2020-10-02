@@ -9,13 +9,13 @@ var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'https://spotifind.co.uk/callback/';
 
-const client = new Client({
+const pgClient = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
 })
-client.connect();
+pgClient.connect();
 
 var generateRandomString = function(length) {
   var text = '';
