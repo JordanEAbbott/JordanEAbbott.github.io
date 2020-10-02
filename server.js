@@ -137,7 +137,7 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-app.get('/log_details', function(req, res)
+app.get('/log_details', function(req, res) {
 
   var saved_tracks = {
     url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
