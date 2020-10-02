@@ -3,7 +3,7 @@ var request = require("request");
 var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
-const {Client} = require("pg");
+//const {Client} = require("pg");
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
