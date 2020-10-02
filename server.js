@@ -96,7 +96,7 @@ app.get('/callback', function(req, res) {
         request.get(options, function(error, response, body) {
           console.log(body);
           user_id = body.id;
-          consloe.log(user_id)
+          console.log(user_id)
         });
 
         res.redirect('/#' +
