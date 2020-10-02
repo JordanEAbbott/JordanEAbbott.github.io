@@ -86,6 +86,7 @@ app.get('/callback', function(req, res) {
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
 
+        var user_id;
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
@@ -94,15 +95,17 @@ app.get('/callback', function(req, res) {
 
         request.get(options, function(error, response, body) {
           console.log(body);
+          var user_id = body.id;
         });
 
         var last_liked = {
-          url: 'https://api.spotify.com/v1/me/tracks',
+          url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
           headers: { 'Authorization': 'Bearer ' + access_token },
           json:true
         };
 
         request.get(last_liked, function(error, response, body) {
+          client.query('INSERT INTO users (user_id, \'example_friends\', \'example_songs\')');
           console.log(body);
         });
 
