@@ -3,28 +3,47 @@ var request = require("request");
 var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
+const { Client } = require("pg");
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+})
+client.connect();
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'https://spotifind.co.uk/callback/';
 
 var generateRandomString = function(length) {
+
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
+
   return text;
 };
+
 var stateKey = 'spotify_auth_state';
+
 var app = express();
+
 app.use(express.static(__dirname + '/views'))
    .use(cors())
    .use(cookieParser());
+
 app.get('/login', function(req, res) {
+
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
+
   var scope = 'user-read-private user-read-email playlist-read-private user-library-read';
+
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -34,10 +53,13 @@ app.get('/login', function(req, res) {
       state: state
     }));
 });
+
 app.get('/callback', function(req, res) {
+
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
+
   if (state === null || state !== storedState) {
     res.redirect('/#' +
       querystring.stringify({
@@ -57,18 +79,33 @@ app.get('/callback', function(req, res) {
       },
       json: true
     };
+
     request.post(authOptions, function(error, response, body) {
+
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
+
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
+
         request.get(options, function(error, response, body) {
           console.log(body);
         });
+
+        var last_liked = {
+          url: 'https://api.spotify.com/v1/me/tracks',
+          headers: { 'Authorization': 'Bearer ' + access_token },
+          json:true
+        };
+
+        request.get(options, function(error, response, body) {
+          console.log(body);
+        });
+
         res.redirect('/#' +
           querystring.stringify({
             access_token: access_token,
@@ -83,7 +120,9 @@ app.get('/callback', function(req, res) {
     });
   };
 });
+
 app.get('/refresh_token', function(req, res) {
+
   var refresh_token = req.query.refresh_token;
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -94,6 +133,7 @@ app.get('/refresh_token', function(req, res) {
     },
     json: true
   };
+
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
@@ -103,5 +143,6 @@ app.get('/refresh_token', function(req, res) {
     }
   });
 });
+
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);
