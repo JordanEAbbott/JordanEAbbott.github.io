@@ -149,6 +149,19 @@ app.get('/log_details', function(req, res) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
     }
+
+    var user_data = {
+      url: 'https://api.spotify.com/v1/me',
+      headers: { 'Authorization': 'Bearer ' + access_token },
+      json: true
+    };
+    var user_id;
+    request.get(options, function(error, response, body) {
+      console.log(body);
+      user_id = body.id;
+      console.log(user_id)
+    });
+    console.log(user_id);
     var saved_tracks = {
       url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
       headers: { 'Authorization': 'Bearer ' + access_token },
