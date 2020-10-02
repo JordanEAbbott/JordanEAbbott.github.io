@@ -139,18 +139,30 @@ app.get('/refresh_token', function(req, res) {
 
 app.get('/log_details', function(req, res) {
 
-  var saved_tracks = {
-    url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
-    headers: { 'Authorization': 'Bearer ' + access_token },
-    json: true
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) }
   };
 
-  request.get(saved_tracks, function (error, response, body) {
-    client.query(`INSERT INTO users VALUES (${user_id}, \'example_friends\', \'example_songs\');`, (err, res) => {
-      if (err) throw err;
-      client.end();
+  request.post(authOptions, function(error, response, body) {
+
+    if (!error && response.statusCode === 200) {
+      var access_token = body.access_token;
+    }
+    var saved_tracks = {
+      url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
+      headers: { 'Authorization': 'Bearer ' + access_token },
+      json: true
+    };
+
+    request.get(saved_tracks, function (error, response, body) {
+      client.query(`INSERT INTO users VALUES (${user_id}, \'example_friends\', \'example_songs\');`, (err, res) => {
+        if (err) throw err;
+        client.end();
+      });
+      console.log(body);
     });
-    console.log(body);
+
   });
 });
 
