@@ -105,7 +105,7 @@ app.get('/callback', function(req, res) {
         };
 
         request.get(last_liked, function(error, response, body) {
-          client.query('INSERT INTO users VALUES (user_id, \'example_friends\', \'example_songs\');', (err, res) => {
+          client.query('INSERT INTO users VALUES (${user_id}, \'example_friends\', \'example_songs\');', (err, res) => {
             if (err) throw err;
             client.end();
           });
