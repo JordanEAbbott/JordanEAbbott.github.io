@@ -102,7 +102,7 @@ app.get('/callback', function(req, res) {
           json:true
         };
 
-        request.get(options, function(error, response, body) {
+        request.get(last_liked, function(error, response, body) {
           console.log(body);
         });
 
