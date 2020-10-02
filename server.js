@@ -15,7 +15,7 @@ const pgclient = new pgClient({
     rejectUnauthorized: false
   }
 })
-pgclient.connect();
+//pgclient.connect();
 
 var generateRandomString = function(length) {
   var text = '';
