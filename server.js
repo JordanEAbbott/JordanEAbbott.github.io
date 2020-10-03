@@ -189,7 +189,6 @@ app.get('/log_details', function(req, res) {
     } else {
       console.log(error);
       console.log(response.statusCode);
-      console.log(response);
     };
 
   });
