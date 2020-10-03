@@ -139,13 +139,16 @@ app.get('/refresh_token', function(req, res) {
 
 app.get('/log_details', function(req, res) {
 
+  code= req.query.code;
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
     form: {
-      grant_type: 'authorization_code',
+      code: code,
       redirect_uri: redirect_uri,
-      code: req.query.code
+      grant_type: 'authorization_code'
+    },
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
     },
     json: true
   };
