@@ -155,17 +155,14 @@ app.get('/log_details', function(req, res) {
       headers: { 'Authorization': 'Bearer ' + access_token },
       json: true
     };
-    var user_id;
+    var user_id = [];
     request.get(user_data, function(error, response, body) {
       console.log(body);
-      user_id = body.id;
+      user_id.push(body.id)
       console.log(user_id)
     });
-    while(!user_id) {
-      continue
-    }
-    
-    console.log(user_id);
+
+    console.log(user_id[0]);
     var saved_tracks = {
       url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
       headers: { 'Authorization': 'Bearer ' + access_token },
@@ -173,7 +170,7 @@ app.get('/log_details', function(req, res) {
     };
 
     request.get(saved_tracks, function (error, response, body) {
-      client.query(`INSERT INTO users VALUES (${user_id}, \'example_friends\', \'example_songs\');`, (err, res) => {
+      client.query(`INSERT INTO users VALUES (${user_id[0]}, \'example_friends\', \'example_songs\');`, (err, res) => {
         if (err) throw err;
         client.end();
       });
