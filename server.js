@@ -175,7 +175,10 @@ app.get('/log_details', function(req, res) {
         });
         console.log(body);
       });
-    }
+    } else {
+      console.log(error);
+      console.log(response.statusCode);
+    };
 
   });
 });
