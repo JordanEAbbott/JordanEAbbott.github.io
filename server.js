@@ -68,6 +68,7 @@ app.get('/callback', function(req, res) {
       }));
   } else {
     res.clearCookie(stateKey);
+    console.log('Code: ' + code);
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
