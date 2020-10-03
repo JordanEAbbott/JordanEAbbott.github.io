@@ -148,7 +148,8 @@ app.get('/log_details', function(req, res) {
       querystring.stringify({
         error: 'state_mismatch'
       }));
-    console.log('error');
+    console.log(state);
+    console.log(storedState);
   } else {
     res.clearCookie(stateKey);
     var authOptions = {
