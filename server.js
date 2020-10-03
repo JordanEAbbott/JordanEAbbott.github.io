@@ -140,7 +140,7 @@ app.get('/refresh_token', function(req, res) {
 
 app.get('/log_details', function(req, res) {
 
-console.log('Authorization code:' + code);
+  console.log('Authorization code: ' + code);
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     form: {
@@ -188,6 +188,7 @@ console.log('Authorization code:' + code);
     } else {
       console.log(error);
       console.log(response.statusCode);
+      console.log(response);
     };
 
   });
