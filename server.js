@@ -148,34 +148,34 @@ app.get('/log_details', function(req, res) {
 
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
-    }
 
-    var user_data = {
-      url: 'https://api.spotify.com/v1/me',
-      headers: { 'Authorization': 'Bearer ' + access_token },
-      json: true
-    };
-    var user_id = [];
-    request.get(user_data, function(error, response, body) {
-      console.log(body);
-      user_id.push(body.id)
-      console.log(user_id)
-    });
-
-    console.log(user_id[0]);
-    var saved_tracks = {
-      url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
-      headers: { 'Authorization': 'Bearer ' + access_token },
-      json: true
-    };
-
-    request.get(saved_tracks, function (error, response, body) {
-      client.query(`INSERT INTO users VALUES (${user_id[0]}, \'example_friends\', \'example_songs\');`, (err, res) => {
-        if (err) throw err;
-        client.end();
+      var user_data = {
+        url: 'https://api.spotify.com/v1/me',
+        headers: { 'Authorization': 'Bearer ' + access_token },
+        json: true
+      };
+      var user_id = [];
+      request.get(user_data, function(error, response, body) {
+        console.log(body);
+        user_id.push(body.id)
+        console.log(user_id)
       });
-      console.log(body);
-    });
+
+      console.log(user_id[0]);
+      var saved_tracks = {
+        url: 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50',
+        headers: { 'Authorization': 'Bearer ' + access_token },
+        json: true
+      };
+
+      request.get(saved_tracks, function (error, response, body) {
+        client.query(`INSERT INTO users VALUES (${user_id[0]}, \'example_friends\', \'example_songs\');`, (err, res) => {
+          if (err) throw err;
+          client.end();
+        });
+        console.log(body);
+      });
+    }
 
   });
 });
