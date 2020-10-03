@@ -148,6 +148,7 @@ app.get('/log_details', function(req, res) {
       querystring.stringify({
         error: 'state_mismatch'
       }));
+    console.log('error');
   } else {
     res.clearCookie(stateKey);
     var authOptions = {
@@ -162,12 +163,11 @@ app.get('/log_details', function(req, res) {
       },
       json: true
     };
-
     request.post(authOptions, function(error, response, body) {
 
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
-
+        console.log('request made')
         var user_data = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
